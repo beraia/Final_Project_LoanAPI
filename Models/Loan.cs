@@ -1,4 +1,4 @@
-﻿namespace Final_Project_LoanAPI
+﻿namespace Final_Project_LoanAPI.Models
 {
     public class Loan
     {
@@ -8,18 +8,4 @@
         public int LoanPeriod { get; set; }
         Status Status { get; set; } = Status.UnderProcessing;
     }
-}
-
-enum LoanType
-{
-    FastLoan,
-    AutoLoan,
-    Installment
-}
-
-enum Status
-{
-    UnderProcessing,
-    Approved,
-    Rejected
 }

@@ -1,4 +1,4 @@
-﻿namespace Final_Project_LoanAPI
+﻿namespace Final_Project_LoanAPI.Services.Models
 {
     public class UserRoles
     {

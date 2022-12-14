@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Final_Project_LoanAPI
+namespace Final_Project_LoanAPI.Services.Models.Register
 {
-    public class RegisterModel
+    public class RegisterRequest
     {
         [Required(ErrorMessage = "First Name is required")]
         public string? FirstName { get; set; }
@@ -18,5 +18,14 @@ namespace Final_Project_LoanAPI
 
         [Required(ErrorMessage = "Password is required")]
         public string? Password { get; set; }
+
+        [Required(ErrorMessage = "Age is required")]
+        public int Age { get; set; }
+
+        [Required(ErrorMessage = "Salary is required")]
+        public decimal Salary { get; set; }
+
+        [Required(ErrorMessage = "Required")]
+        public bool IsBlocked { get; set; }
     }
 }

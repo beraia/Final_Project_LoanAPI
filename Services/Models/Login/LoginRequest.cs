@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Final_Project_LoanAPI
+namespace Final_Project_LoanAPI.Services.Models.Login
 {
-    public class LoginModel
+    public class LoginRequest
     {
         [Required(ErrorMessage = "User Name is required")]
         public string? UserName { get; set; }

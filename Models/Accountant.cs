@@ -1,4 +1,4 @@
-﻿namespace Final_Project_LoanAPI
+﻿namespace Final_Project_LoanAPI.Models
 {
     public class Accountant
     {

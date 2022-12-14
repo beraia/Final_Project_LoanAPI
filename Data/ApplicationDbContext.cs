@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Final_Project_LoanAPI.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,6 @@ namespace Final_Project_LoanAPI.Data
         {
             base.OnModelCreating(builder);
         }
-
 
     }
 }
