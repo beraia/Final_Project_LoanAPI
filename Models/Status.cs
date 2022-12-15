@@ -1,4 +1,4 @@
-﻿enum Status
+﻿public enum Status
 {
     UnderProcessing,
     Approved,

@@ -1,7 +1,6 @@
 ﻿using Azure.Core;
 using Final_Project_LoanAPI.Models;
-using Final_Project_LoanAPI.Services.Models.Login;
-using Final_Project_LoanAPI.Services.Models.Register;
+using Final_Project_LoanAPI.Services.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,7 +22,7 @@ namespace Final_Project_LoanAPI.Services
             _configuration = configuration;
         }
 
-        public async Task<LoginResponse> Login(LoginRequest request)
+        public async Task<Login.Response> Login(Login.Request request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
@@ -43,7 +42,7 @@ namespace Final_Project_LoanAPI.Services
 
                 var token = GetToken(authClaims);
 
-                return new LoginResponse
+                return new Login.Response
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
                     Expiration = token.ValidTo
@@ -52,12 +51,12 @@ namespace Final_Project_LoanAPI.Services
             return null;
         }
 
-        public async Task<RegisterResponse> Register(RegisterRequest request)
+        public async Task<Register.Response> Register(Register.Request request)
         {
             var userExist = await _userManager.FindByNameAsync(request.UserName);
             if (userExist != null)
             {
-                return new RegisterResponse() { Succsess = false, Message = "User allready exist" };
+                return new Register.Response() { Succsess = false, Message = "User allready exist" };
             }
 
             User user = new()
@@ -70,10 +69,10 @@ namespace Final_Project_LoanAPI.Services
 
             if (!result.Succeeded)
             {
-                return new RegisterResponse() { Succsess = false, Message = "User cannot be created" };
+                return new Register.Response() { Succsess = false, Message = "User cannot be created" };
             }
 
-            return new RegisterResponse() { Succsess = true };
+            return new Register.Response() { Succsess = true };
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)

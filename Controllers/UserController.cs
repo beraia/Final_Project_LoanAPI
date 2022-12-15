@@ -1,17 +1,7 @@
-﻿using Final_Project_LoanAPI.Models;
-using Final_Project_LoanAPI.Services;
-using Final_Project_LoanAPI.Services.Models;
-using Final_Project_LoanAPI.Services.Models.Login;
-using Final_Project_LoanAPI.Services.Models.Register;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Final_Project_LoanAPI.Services;
+using Final_Project_LoanAPI.Services.Models.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Claims;
-using System.Text;
 
 namespace Final_Project_LoanAPI.Controllers
 {
@@ -30,7 +20,7 @@ namespace Final_Project_LoanAPI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] Login.Request request)
         {
             var response = await _userService.Login(request);
             if(response == null)
@@ -42,7 +32,7 @@ namespace Final_Project_LoanAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] Register.Request request)
         {
             var response = await _userService.Register(request);
             if (response.Succsess)

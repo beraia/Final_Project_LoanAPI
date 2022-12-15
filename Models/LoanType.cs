@@ -1,4 +1,4 @@
-﻿enum LoanType
+﻿public enum LoanType
 {
     FastLoan,
     AutoLoan,
