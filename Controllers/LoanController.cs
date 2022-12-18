@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Final_Project_LoanAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class LoanController : ControllerBase
@@ -31,7 +31,7 @@ namespace Final_Project_LoanAPI.Controllers
             return BadRequest();
         }
 
-        //[Authorize()]
+        [Authorize()]
         [HttpGet]
         [Route("GetLoans")]
         public async Task<IActionResult> GetLoans([FromQuery] GetLoansRequest request)
@@ -41,10 +41,10 @@ namespace Final_Project_LoanAPI.Controllers
             {
                 return BadRequest();
             }
-            return null;
+            return Ok(response);
         }
 
-        //[Authorize()]
+        [Authorize()]
         [HttpGet]
         [Route("GetLoanById")]
         public async Task<IActionResult> GetLoanById([FromQuery] GetLoanByIdRequest request) 
@@ -57,7 +57,7 @@ namespace Final_Project_LoanAPI.Controllers
             return null;
         }
 
-        //[Authorize()]
+        [Authorize()]
         [HttpDelete]
         [Route("DeleteLoan")]
         public async Task<IActionResult> DeleteLoan([FromQuery] DeleteLoanRequest request)
@@ -70,7 +70,7 @@ namespace Final_Project_LoanAPI.Controllers
             return null;
         }
 
-        //[Authorize()]
+        [Authorize()]
         [HttpPut]
         [Route("UpdateLoan")]
         public async Task<IActionResult> UpdateLoan([FromQuery] UpdateLoanRequest request)

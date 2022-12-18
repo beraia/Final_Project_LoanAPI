@@ -1,6 +1,7 @@
 ﻿using Final_Project_LoanAPI.Data;
 using Final_Project_LoanAPI.Models;
 using Final_Project_LoanAPI.Services.Models.Loan;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Final_Project_LoanAPI.Services
@@ -10,11 +11,13 @@ namespace Final_Project_LoanAPI.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<User> _userManager;
 
-        public LoanService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public LoanService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor, UserManager<User> userManager)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         public async Task<CreateLoanResponse> CreateLoan(CreateLoanRequest request)
@@ -22,6 +25,11 @@ namespace Final_Project_LoanAPI.Services
             var username = _httpContextAccessor.HttpContext.User.Identity.Name;
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
+            if(user.IsBlocked)
+            {
+                return new CreateLoanResponse() { Succsess = false, Message = "User is blocked" };
+            }
 
             Loan loan = new()
             {
@@ -44,7 +52,17 @@ namespace Final_Project_LoanAPI.Services
 
         public async Task<GetLoansResponse> GetLoans(GetLoansRequest request)
         {
-            var loans = _dbContext.Loans.Select(x => new GetLoansResponse.Loan
+            var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
+            var loansQuery = _dbContext.Loans.Select(x => x);
+            if(!await _userManager.IsInRoleAsync(user, "Accountant"))
+            {
+                loansQuery = loansQuery.Where(x => x.User.Id == user.Id);
+            }
+
+            var loans = loansQuery.Select(x => new GetLoansResponse.Loan
             {
                 Ammount= x.Ammount,
                 Currency = x.Currency,
