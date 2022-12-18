@@ -18,61 +18,92 @@ namespace Final_Project_LoanAPI.Controllers
             _loanService = loanService;
         }
 
-        [Authorize()]
+        [Authorize]
         [HttpPost]
-        [Route("CreateLoan")]
+        [Route("Create")]
         public async Task<IActionResult> CreateLoan([FromQuery] CreateLoanRequest request)
         {
-            var response = await _loanService.CreateLoan(request);
-            if(response.Succsess)
+            try
             {
-                return Ok(response);
+                var response = await _loanService.CreateLoan(request);
+                if (response.Succsess)
+                {
+                    return Ok(response);
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            catch (Exception)
+            {
+
+                return StatusCode(500, "Server Error");
+            }
         }
 
-        [Authorize()]
+        [Authorize]
         [HttpGet]
         [Route("GetLoans")]
         public async Task<IActionResult> GetLoans([FromQuery] GetLoansRequest request)
         {
-            var response = await _loanService.GetLoans(request);
-            if(response == null)
+            try
             {
-                return BadRequest();
+                var response = await _loanService.GetLoans(request);
+                if (response == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(response);
             }
-            return Ok(response);
+            catch (Exception)
+            {
+
+                return StatusCode(500, "Server Error");
+            }
         }
 
-        [Authorize()]
+        [Authorize]
         [HttpGet]
-        [Route("GetLoanById")]
+        [Route("GetById")]
         public async Task<IActionResult> GetLoanById([FromQuery] GetLoanByIdRequest request) 
         {
-            var response = await _loanService.GetLoanById(request);
-            if(response != null)
+            try
             {
-                return Ok(response);
+                var response = await _loanService.GetLoanById(request);
+                if (response != null)
+                {
+                    return Ok(response);
+                }
+                return null;
             }
-            return null;
+            catch (Exception)
+            {
+
+                return StatusCode(500, "Server Error");
+            }
         }
 
-        [Authorize()]
+        [Authorize]
         [HttpDelete]
-        [Route("DeleteLoan")]
+        [Route("Delete")]
         public async Task<IActionResult> DeleteLoan([FromQuery] DeleteLoanRequest request)
         {
-            var response = await _loanService.DeleteLoan(request);
-            if (response.Succsess)
+            try
             {
-                return Ok(response);
+                var response = await _loanService.DeleteLoan(request);
+                if (response.Succsess)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
             }
-            return BadRequest(response);
+            catch (Exception)
+            {
+                return StatusCode(500, "Server Error");
+            }
         }
 
-        [Authorize()]
+        [Authorize]
         [HttpPut]
-        [Route("UpdateLoan")]
+        [Route("Update")]
         public async Task<IActionResult> UpdateLoan([FromQuery] UpdateLoanRequest request)
         {
             try

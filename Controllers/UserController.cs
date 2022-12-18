@@ -23,12 +23,19 @@ namespace Final_Project_LoanAPI.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var response = await _userService.Login(request);
-            if(response == null)
+            try
             {
-                return Unauthorized();
+                var response = await _userService.Login(request);
+                if (response == null)
+                {
+                    return Unauthorized();
+                }
+                return Ok(response);
             }
-            return Ok(response);
+            catch (Exception)
+            {
+                return StatusCode(500, "Server Error");
+            }
         }
 
         [HttpPost]
@@ -36,12 +43,19 @@ namespace Final_Project_LoanAPI.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromQuery] RegisterRequest request)
         {
-            var response = await _userService.Register(request);
-            if (response.Succsess)
+            try
             {
-                return Ok(response);
+                var response = await _userService.Register(request);
+                if (response.Succsess)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
             }
-            return BadRequest(response);
+            catch (Exception)
+            {
+                return StatusCode(500, "Server Error");
+            }
         }
 
         [HttpPut]
@@ -49,12 +63,19 @@ namespace Final_Project_LoanAPI.Controllers
         [Route("Block/{id}")]
         public async Task<IActionResult> BlockUser([FromBody] string id)
         {
-            var response = await _userService.BlockUser(new BlockUserRequest { Id = id});
-            if (response.Succsess)
+            try
             {
-                return Ok(response);
+                var response = await _userService.BlockUser(new BlockUserRequest { Id = id });
+                if (response.Succsess)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
             }
-            return BadRequest(response);
+            catch (Exception)
+            {
+                return StatusCode(500, "Server Error");
+            }
         }
 
         //[AllowAnonymous]
