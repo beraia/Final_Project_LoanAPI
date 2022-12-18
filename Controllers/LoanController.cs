@@ -18,7 +18,7 @@ namespace Final_Project_LoanAPI.Controllers
             _loanService = loanService;
         }
 
-        //[Authorize()]
+        [Authorize()]
         [HttpPost]
         [Route("CreateLoan")]
         public async Task<IActionResult> CreateLoan([FromQuery] CreateLoanRequest request)

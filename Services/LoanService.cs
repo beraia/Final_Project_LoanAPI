@@ -9,16 +9,23 @@ namespace Final_Project_LoanAPI.Services
     public class LoanService : ILoanService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LoanService(ApplicationDbContext dbContext)
+        public LoanService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<CreateLoanResponse> CreateLoan(CreateLoanRequest request)
         {
+            var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
             Loan loan = new()
             {
+                User = user,
                 LoanType = request.LoanType,
                 LoanPeriod = request.LoanPeriod,
                 Ammount = request.Ammount,
