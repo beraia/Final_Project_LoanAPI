@@ -76,11 +76,11 @@ namespace Final_Project_LoanAPI.Controllers
         public async Task<IActionResult> UpdateLoan([FromQuery] UpdateLoanRequest request)
         {
             var response = await _loanService.UpdateLoan(request);
-            if (response != null)
+            if (response.Succsess)
             {
                 return Ok(response);
             }
-            return null;
+            return BadRequest(response);
         }
     }
 

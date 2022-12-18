@@ -115,12 +115,32 @@ namespace Final_Project_LoanAPI.Services
 
         public async Task<UpdateLoanResponse> UpdateLoan(UpdateLoanRequest request)
         {
+            var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
             var id = request.Id;
             var loan = await _dbContext.Loans.FirstOrDefaultAsync(x => request.Id == id);
             if (loan == null)
             {
                 return new UpdateLoanResponse() { Succsess = false, Message = "Wrong id" };
             }
+            if (!await _userManager.IsInRoleAsync(user, "Accountant"))
+            {
+                if(loan.User.Id != user.Id)
+                {
+                    return new UpdateLoanResponse() { Succsess = false, Message = "You dont have access" };
+                }
+                if(loan.Status != Status.UnderProcessing)
+                {
+                    return new UpdateLoanResponse() { Succsess = false, Message = "Wrong status" };
+                }
+            }
+            loan.Ammount= request.Ammount;
+            loan.Currency = request.Currency;
+            loan.LoanPeriod = request.LoanPeriod;
+            loan.LoanType = request.LoanType;
+            await _dbContext.SaveChangesAsync();
             return new UpdateLoanResponse() { Succsess = true, Message = "The loan was successfully renewed" };
         }
     }

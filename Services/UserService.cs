@@ -114,5 +114,20 @@ namespace Final_Project_LoanAPI.Services
 
             return token;
         }
+
+        public async Task CreateAccountant()
+        {
+            User user = new()
+            {
+                UserName = "Accountant",
+                Email = "accountant@gmail.com"
+            };
+
+            await _roleManager.CreateAsync(new IdentityRole { Name = "Accountant" });
+
+            var result = await _userManager.CreateAsync(user, "qwerty1234567890");
+
+            await _userManager.AddToRoleAsync(user, "Accountant");
+        }
     }
 }

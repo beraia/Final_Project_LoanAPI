@@ -10,5 +10,6 @@ namespace Final_Project_LoanAPI.Services
 
         Task<BlockUserResponse> BlockUser(BlockUserRequest request);
 
+        Task CreateAccountant();
     }
 }
