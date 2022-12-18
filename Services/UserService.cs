@@ -97,7 +97,7 @@ namespace Final_Project_LoanAPI.Services
                 return new RegisterResponse() { Succsess = false, Message = "User cannot be created" };
             }
 
-            return new RegisterResponse() { Succsess = true };
+            return new RegisterResponse() { Succsess = true, Message = "Congratulations, your account has been successfully created." };
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
@@ -115,19 +115,19 @@ namespace Final_Project_LoanAPI.Services
             return token;
         }
 
-        public async Task CreateAccountant()
-        {
-            User user = new()
-            {
-                UserName = "Accountant",
-                Email = "accountant@gmail.com"
-            };
+        //public async Task CreateAccountant()
+        //{
+        //    User user = new()
+        //    {
+        //        UserName = "Accountant",
+        //        Email = "accountant@gmail.com"
+        //    };
 
-            await _roleManager.CreateAsync(new IdentityRole { Name = "Accountant" });
+        //    await _roleManager.CreateAsync(new IdentityRole { Name = "Accountant" });
 
-            var result = await _userManager.CreateAsync(user, "qwerty1234567890");
+        //    var result = await _userManager.CreateAsync(user, "qwerty1234567890");
 
-            await _userManager.AddToRoleAsync(user, "Accountant");
-        }
+        //    await _userManager.AddToRoleAsync(user, "Accountant");
+        //}
     }
 }

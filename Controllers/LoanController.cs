@@ -75,12 +75,20 @@ namespace Final_Project_LoanAPI.Controllers
         [Route("UpdateLoan")]
         public async Task<IActionResult> UpdateLoan([FromQuery] UpdateLoanRequest request)
         {
-            var response = await _loanService.UpdateLoan(request);
-            if (response.Succsess)
+            try
             {
-                return Ok(response);
+                var response = await _loanService.UpdateLoan(request);
+                if (response.Succsess)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
             }
-            return BadRequest(response);
+            catch (Exception)
+            {
+
+                return StatusCode(500, "Server Error");
+            }
         }
     }
 

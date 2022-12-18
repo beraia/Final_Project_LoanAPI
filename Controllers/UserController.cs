@@ -57,13 +57,13 @@ namespace Final_Project_LoanAPI.Controllers
             return BadRequest(response);
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("CreateAccountant")]
-        public async Task<IActionResult> CreateAccountant()
-        {
-            await _userService.CreateAccountant();
-            return Ok();
-        }
+        //[AllowAnonymous]
+        //[HttpPost]
+        //[Route("CreateAccountant")]
+        //public async Task<IActionResult> CreateAccountant()
+        //{
+        //    await _userService.CreateAccountant();
+        //    return Ok();
+        //}
     }
 }
