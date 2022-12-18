@@ -34,7 +34,7 @@ namespace Final_Project_LoanAPI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromQuery] RegisterRequest request)
         {
             var response = await _userService.Register(request);
             if (response.Succsess)

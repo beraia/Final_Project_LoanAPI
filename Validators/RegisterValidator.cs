@@ -12,8 +12,8 @@ namespace Final_Project_LoanAPI.Validators
             RuleFor(x => x.UserName).NotEmpty().WithMessage("Username is empty").Length(2, 20).WithMessage("Length is not correct");
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email is empty").Length(2, 20).WithMessage("Length is not correct");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is empty").Length(2, 20).WithMessage("Length is not correct");
-            RuleFor(x => x.Age).GreaterThan(17).WithMessage("Age is not correct");
-            RuleFor(x => x.Salary).GreaterThan(500).WithMessage("The salary amount is not correct");
+            RuleFor(x => x.Age).NotEmpty().WithMessage("Age is not correct");
+            RuleFor(x => x.Salary).GreaterThan(0).WithMessage("The salary amount is not correct");
         }
     }
 }
