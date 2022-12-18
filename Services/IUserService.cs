@@ -4,8 +4,11 @@ namespace Final_Project_LoanAPI.Services
 {
     public interface IUserService
     {
-        Task<Login.Response> Login(Login.Request request);
+        Task<LoginResponse> Login(LoginRequest request);
 
-        Task<Register.Response> Register(Register.Request request);
+        Task<RegisterResponse> Register(RegisterRequest request);
+
+        Task<BlockUserResponse> BlockUser(BlockUserRequest request);
+
     }
 }

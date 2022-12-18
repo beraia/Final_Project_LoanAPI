@@ -1,4 +1,5 @@
 ﻿using Final_Project_LoanAPI.Services;
+using Final_Project_LoanAPI.Services.Models;
 using Final_Project_LoanAPI.Services.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +20,8 @@ namespace Final_Project_LoanAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] Login.Request request)
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var response = await _userService.Login(request);
             if(response == null)
@@ -32,7 +33,8 @@ namespace Final_Project_LoanAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] Register.Request request)
+        [Route("Register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var response = await _userService.Register(request);
             if (response.Succsess)

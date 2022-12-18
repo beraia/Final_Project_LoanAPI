@@ -8,5 +8,7 @@
         public string Currency { get; set; }
         public int LoanPeriod { get; set; }
         public Status Status { get; set; } = Status.UnderProcessing;
+
+        public virtual User User { get; set; }
     }
 }

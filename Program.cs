@@ -18,6 +18,7 @@ ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddHttpContextAccessor();
 
 // For Identity
 builder.Services.AddIdentity<User, IdentityRole>(options =>

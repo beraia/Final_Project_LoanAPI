@@ -1,7 +1,10 @@
 ﻿using Azure.Core;
+using Final_Project_LoanAPI.Data;
 using Final_Project_LoanAPI.Models;
 using Final_Project_LoanAPI.Services.Models.User;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,17 +17,39 @@ namespace Final_Project_LoanAPI.Services
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _dbContext;
 
-        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _dbContext = dbContext;
         }
 
-        public async Task<Login.Response> Login(Login.Request request)
+        public async Task<BlockUserResponse> BlockUser(BlockUserRequest request)
+        {
+            var id = request.Id;
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(user != null)
+            {
+                user.IsBlocked = true;
+                await _dbContext.SaveChangesAsync();
+                return new BlockUserResponse() { Succsess = true };
+            }
+            return new BlockUserResponse() { Succsess = false };
+
+        }
+
+        public async Task<LoginResponse> Login(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if(user!= null && user.IsBlocked)
+            {
+                return new LoginResponse() { Succsess = false, Message = "User is blocked" };
+            }
 
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
@@ -42,21 +67,21 @@ namespace Final_Project_LoanAPI.Services
 
                 var token = GetToken(authClaims);
 
-                return new Login.Response
+                return new LoginResponse
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    Expiration = token.ValidTo
+                    Expiration = token.ValidTo,
                 };
             }
             return null;
         }
 
-        public async Task<Register.Response> Register(Register.Request request)
+        public async Task<RegisterResponse> Register(RegisterRequest request)
         {
             var userExist = await _userManager.FindByNameAsync(request.UserName);
             if (userExist != null)
             {
-                return new Register.Response() { Succsess = false, Message = "User allready exist" };
+                return new RegisterResponse() { Succsess = false, Message = "User allready exist" };
             }
 
             User user = new()
@@ -69,10 +94,10 @@ namespace Final_Project_LoanAPI.Services
 
             if (!result.Succeeded)
             {
-                return new Register.Response() { Succsess = false, Message = "User cannot be created" };
+                return new RegisterResponse() { Succsess = false, Message = "User cannot be created" };
             }
 
-            return new Register.Response() { Succsess = true };
+            return new RegisterResponse() { Succsess = true };
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)

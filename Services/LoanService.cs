@@ -25,13 +25,13 @@ namespace Final_Project_LoanAPI.Services
                 Currency = request.Currency
             };
 
-            if (loan.LoanPeriod != null && loan.Currency != null && loan.Ammount != null)
+            if (loan.LoanPeriod > 1 && loan.Currency != null && loan.Ammount > 50 && loan.LoanType != null)
             {
                 _dbContext.Loans.Add(loan);
                 _dbContext.SaveChanges();
                 return new CreateLoanResponse() { Succsess = true, Message = "Added" };
             }
-            return new CreateLoanResponse() { Succsess = false, Message = "fuuuuuuck" };
+            return new CreateLoanResponse() { Succsess = false, Message = "" };
 
         }
 
@@ -72,6 +72,31 @@ namespace Final_Project_LoanAPI.Services
                 LoanPeriod = loan.LoanPeriod,
                 Status = loan.Status
             };
+        }
+
+        public async Task<DeleteLoanResponse> DeleteLoan(DeleteLoanRequest request)
+        {
+            var id = request.Id;
+            var loan = await _dbContext.Loans.FirstOrDefaultAsync(x => request.Id == id);
+
+            if(loan == null)
+            {
+                return new DeleteLoanResponse() { Succsess = false, Message = "Wrong id" };
+            }
+            _dbContext.Loans.Remove(loan);
+            await _dbContext.SaveChangesAsync();
+            return new DeleteLoanResponse() { Succsess = true, Message = "Deleted" };
+        }
+
+        public async Task<UpdateLoanResponse> UpdateLoan(UpdateLoanRequest request)
+        {
+            var id = request.Id;
+            var loan = await _dbContext.Loans.FirstOrDefaultAsync(x => request.Id == id);
+            if (loan == null)
+            {
+                return new UpdateLoanResponse() { Succsess = false, Message = "Wrong id" };
+            }
+            return new UpdateLoanResponse() { Succsess = true, Message = "The loan was successfully renewed" };
         }
     }
 }
