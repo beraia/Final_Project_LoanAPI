@@ -63,11 +63,11 @@ namespace Final_Project_LoanAPI.Controllers
         public async Task<IActionResult> DeleteLoan([FromQuery] DeleteLoanRequest request)
         {
             var response = await _loanService.DeleteLoan(request);
-            if (response != null)
+            if (response.Succsess)
             {
                 return Ok(response);
             }
-            return null;
+            return BadRequest(response);
         }
 
         [Authorize()]

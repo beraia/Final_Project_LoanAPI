@@ -101,12 +101,26 @@ namespace Final_Project_LoanAPI.Services
 
         public async Task<DeleteLoanResponse> DeleteLoan(DeleteLoanRequest request)
         {
+            var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
             var id = request.Id;
             var loan = await _dbContext.Loans.FirstOrDefaultAsync(x => request.Id == id);
-
-            if(loan == null)
+            if (loan == null)
             {
                 return new DeleteLoanResponse() { Succsess = false, Message = "Wrong id" };
+            }
+            if (!await _userManager.IsInRoleAsync(user, "Accountant"))
+            {
+                if (loan.User.Id != user.Id)
+                {
+                    return new DeleteLoanResponse() { Succsess = false, Message = "You dont have access" };
+                }
+                if (loan.Status != Status.UnderProcessing)
+                {
+                    return new DeleteLoanResponse() { Succsess = false, Message = "Wrong status" };
+                }
             }
             _dbContext.Loans.Remove(loan);
             await _dbContext.SaveChangesAsync();
