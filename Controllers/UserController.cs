@@ -43,5 +43,18 @@ namespace Final_Project_LoanAPI.Controllers
             }
             return BadRequest(response);
         }
+
+        [HttpPut]
+        [Authorize (Roles = UserRoles.Accountant)]
+        [Route("Block/{id}")]
+        public async Task<IActionResult> BlockUser([FromBody] string id)
+        {
+            var response = await _userService.BlockUser(new BlockUserRequest { Id = id});
+            if (response.Succsess)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
     }
 }
