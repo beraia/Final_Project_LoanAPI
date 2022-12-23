@@ -61,7 +61,7 @@ namespace Final_Project_LoanAPI.Controllers
         [HttpPut]
         [Authorize (Roles = UserRoles.Accountant)]
         [Route("Block/{id}")]
-        public async Task<IActionResult> BlockUser([FromBody] string id)
+        public async Task<IActionResult> BlockUser(string id)
         {
             try
             {

@@ -72,7 +72,7 @@ namespace Final_Project_LoanAPI.Controllers
                 {
                     return Ok(response);
                 }
-                return null;
+                return BadRequest(response);
             }
             catch (Exception)
             {
